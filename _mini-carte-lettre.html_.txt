@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Carte Cadeau</title>
+  <style>
+    body {
+      background: #f3f3fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+    }
+    .carte-container {
+      background: #fffbe6;
+      border-radius: 18px;
+      box-shadow: 0 2px 10px #bfa;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      min-width: 320px;
+      margin-bottom: 2rem;
+    }
+    .stickers {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      user-select: none;
+    }
+    .carte-message {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .carte-btns {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+    .carte-btn {
+      background: #ffda79;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7em 2em;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+    .carte-btn:hover { background: #ffe4a0; }
+    /* Lettre animée */
+    .lettre {
+      margin: 2rem auto 0;
+      width: 240px;
+      height: 140px;
+      perspective: 1000px;
+      display: none;
+    }
+    .lettre-ouverte .lettre {
+      display: block;
+      animation: lettreOuverture 1.2s cubic-bezier(0.4, 2, 0.6, 1) forwards;
+    }
+    .lettre-corps {
+      background: #fff;
+      border: 2px solid #f3c577;
+      border-radius: 8px;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .lettre-texte {
+      opacity: 0;
+      padding: 1.2em;
+      font-size: 1.2em;
+      color: #5a4a1d;
+      transition: opacity 0.7s 1s;
+    }
+    .lettre-ouverte .lettre-texte {
+      opacity: 1;
+    }
+    .lettre-volet {
+      position: absolute;
+      left: 0; right: 0;
+      height: 70px;
+      background: #ffe6b0;
+      border-radius: 8px 8px 0 0;
+      border-bottom: 2px solid #f3c577;
+      z-index: 2;
+      transform-origin: top;
+      transition: transform 1s cubic-bezier(0.77,0,0.18,1);
+      top: 0;
+    }
+    .lettre-ouverte .lettre-volet {
+      transform: rotateX(-120deg);
+      transition-delay: 0.1s;
+    }
+    @keyframes lettreOuverture {
+      from { transform: scale(0.7) rotateZ(-7deg); }
+      to { transform: scale(1) rotateZ(0);}
+    }
+  </style>
+</head>
+<body>
+  <div class="carte-container" id="carteBox">
+    <div class="stickers">💌🎁✨</div>
+    <div class="carte-message" id="carteMessage">Tu as reçu une mini-carte surprise !</div>
+    <div class="carte-btns" id="carteBtns">
+      <button class="carte-btn" id="btnOuvrir">Ouvrir</button>
+      <button class="carte-btn" id="btnRefuser">Refuser</button>
+    </div>
+  </div>
+  <div class="lettre" id="lettreBox">
+    <div class="lettre-volet"></div>
+    <div class="lettre-corps">
+      <div class="lettre-texte" id="lettreTexte"></div>
+    </div>
+  </div>
+  <script>
+    // Personnalisation des boutons et texte
+    const texteBtnOuvrir = "Ouvrir";
+    const texteBtnRefuser = "Refuser";
+    const messageIntro = "Tu as reçu une mini-carte surprise !";
+    const texteApresOuverture = "Tiens, cadeau, un mot de ma part…";
+    const texteLettre = `Cher·e ami·e,<br><br>
+    Je voulais juste te faire sourire aujourd'hui 😊<br>
+    Merci d'être toi !<br><br>
+    <i>(Ce texte est personnalisable)</i>`;
+
+    // Initialisation
+    document.getElementById('btnOuvrir').textContent = texteBtnOuvrir;
+    document.getElementById('btnRefuser').textContent = texteBtnRefuser;
+    document.getElementById('carteMessage').textContent = messageIntro;
+
+    // Actions
+    document.getElementById('btnOuvrir').onclick = function() {
+      document.getElementById('carteBtns').style.display = 'none';
+      document.getElementById('carteMessage').textContent = texteApresOuverture;
+      setTimeout(()=>{
+        document.getElementById('carteBox').classList.add('lettre-ouverte');
+        document.getElementById('lettreBox').style.display = 'block';
+        setTimeout(()=>{
+          document.getElementById('lettreTexte').innerHTML = texteLettre;
+        }, 1100);
+      }, 700);
+    };
+    document.getElementById('btnRefuser').onclick = function() {
+      document.getElementById('carteMessage').textContent = "Ce n'est pas grave, tu pourras l'ouvrir plus tard 😊";
+      document.getElementById('carteBtns').style.display = 'none';
+    };
+  </script>
+</body>
+</html>
